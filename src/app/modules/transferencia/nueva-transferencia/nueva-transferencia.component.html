@@ -1,0 +1,54 @@
+<div *ngIf="loading"  class="d-flex justify-content-center mt-5">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<div *ngIf="!loading" class=" offset-3 col-6">
+  <h2 class="mb-3 mt-3">Nueva Transferencia</h2>
+
+  <div *ngIf="destinatarios && destinatarios.length > 0" class="input-group m-3">
+    <select (change)="selectDestinatario($event)" class="custom-select" id="usuarios">
+      <option selected>Destinatario...</option>
+      <option *ngFor="let destinatario of destinatarios" [value]="destinatario.rut">{{destinatario.nombre}} - {{destinatario.rut}}</option>
+    </select>
+  </div>
+
+  
+  <table  *ngIf="destinatarioSeleccionado" class="table">
+    <tbody>
+      <tr>
+        <th>Banco</th>
+        <td>{{destinatarioSeleccionado.banco}}</td>
+      </tr>
+      <tr>
+        <th>Cuenta</th>
+        <td>{{destinatarioSeleccionado.tipoCuenta}}</td>
+      </tr>
+      <tr>
+        <th>Nombre</th>
+        <td>{{destinatarioSeleccionado.nombre}}</td>
+      </tr>
+      <tr>
+        <th>Rut</th>
+        <td>{{destinatarioSeleccionado.rut}}</td>
+      </tr>
+      <th>Correo</th>
+      <td>{{destinatarioSeleccionado.correo}}</td>
+    </tbody>
+  </table>
+
+
+  <form [formGroup]="transferencia" (ngSubmit)="onSubmit()">
+    <div *ngIf="destinatarioSeleccionado" class="form-group m-4 font-weight-bold row">
+      <label class="col-3" for="monto">Monto</label>
+      <div class="col-6">
+        <input formControlName="monto" type="number" class="form-control" id="monto" (keyup)="validateForm()">
+      </div>
+    </div>
+    <button [disabled]="!valido" type="submit" class="btn btn-primary btn-block">Transferir</button>
+  </form>
+
+
+  <a class="btn btn-link" routerLink="/transferencia/nuevo-destinatario">Nuevo Destinatario</a>
+</div>
+
